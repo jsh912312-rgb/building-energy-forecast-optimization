@@ -24,7 +24,7 @@ import pandas as pd
 import lightgbm as lgb
 import pulp
 
-ARTIFACT_DIR = "artifacts"
+ARTIFACT_DIR = "features"
 TARGET_BUILDING = 802
 
 # ---- 1. 예측값 로드 (겨울철 대표일 기준) ----
@@ -42,9 +42,9 @@ pred_log = booster.predict(b[features_m], num_iteration=booster.best_iteration)
 b["predicted_kwh"] = np.expm1(pred_log).clip(min=0)
 
 winter = b[b["air_temperature"] < 0]
-predicted_t = winter.groupby("hour")["predicted_kwh"].mean().values  # 24개 값 (대표일 프로필)
+predicted_t = winter.groupby("hour")["predicted_kwh"].mean().values 
 
-# ---- 2. 물리적 제약 상수 (실측 데이터로부터 도출) ----
+# ---- 2. 물리적 제약 상수 ----
 baseline_min = predicted_t.min() * 0.95   # 최소 운영량은 관측 최저치의 95%까지만 허용
 ramp_up_limit = 950     # h6->h8 실측 상승폭(약 900) + 여유
 ramp_down_limit = 200   # h8->h20 실측 하강폭(약 133) + 여유
