@@ -11,7 +11,7 @@ import lightgbm as lgb
 
 ARTIFACT_DIR = "artifacts"
 STEAM_METER_ID = 2
-BAD_SITES = [14]  # 이전 분석에서 오차 2~5배로 확인된 사이트
+BAD_SITES = [14]  
 
 
 def load_artifacts():
