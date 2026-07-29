@@ -18,7 +18,7 @@ import lightgbm as lgb
 
 ARTIFACT_DIR = "artifacts"
 ELECTRICITY_METER_ID = 0
-BAD_SITES = [13]  # steam에서 확인된 노이즈 사이트. site 0은 별도 단위이슈 체크 필요(아래 참고)
+BAD_SITES = [13] 
 
 
 def load_artifacts():
@@ -77,7 +77,7 @@ def screen_electricity_buildings(df: pd.DataFrame, booster: lgb.Booster, meta: d
 
     result = pd.DataFrame(rows)
 
-    # 절대 사용량 왜곡 방지 (steam 스크리닝 때와 동일한 이유)
+    # 절대 사용량 왜곡 방지 
     min_load = result["mean_predicted_kwh"].median()
 
     filtered = result[
