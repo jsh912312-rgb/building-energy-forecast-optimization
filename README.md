@@ -18,7 +18,7 @@ ASHRAE Energy Prediction 데이터셋을 활용하여 건물별 전력 사용 �
 8. [평가](about:blank#%ED%8F%89%EA%B0%80)
 9. [인사이트](about:blank#%EC%9D%B8%EC%82%AC%EC%9D%B4%ED%8A%B8)
 10. [비즈니스 제안](about:blank#%EB%B9%84%EC%A6%88%EB%8B%88%EC%8A%A4-%EC%A0%9C%EC%95%88)
-11. [최적화 프로토타입](https://app.notion.com/p/README-396fc3b768a58040b2b7ff7e29948ce8?pvs=21)
+11. [최적화 프로토타입](1)
 12. [한계 및 향후 개선](about:blank#%ED%95%9C%EA%B3%84-%EB%B0%8F-%ED%96%A5%ED%9B%84-%EA%B0%9C%EC%84%A0)
 
 ---
