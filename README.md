@@ -183,7 +183,7 @@ weather (기상 데이터)
         - 9~10월 구간만 딱 800,000 근처로 튀었다가 그 앞뒤로는 계속 0
         - 특정 기간 동안 스케일이 다르게 찍힘 → 구간 전체 단위 오류로 판단
             
-            ![image.png](README/image%201.png)
+            ![image.png](README/image1.png)
             
         
         결론 : building 778의 electric meter 제외
@@ -193,7 +193,7 @@ weather (기상 데이터)
         - 스케일도 0~4만 수준으로 다른 정상 건물들과 비슷한 범위
         - 값이 튀는 게 아니라 **일별로 자연스럽게 오르내리는 변동성**(아마 난방을 켰다 껐다 하는 실제 사용 패턴)
         
-        ![image.png](README/c0ed2140-470f-486f-8e45-012cfa611910.png)
+        ![image.png](README/building108.png)
         
         결론 : 정상적인 계절 신호이므로 그대로 유지
         
@@ -201,7 +201,7 @@ weather (기상 데이터)
         - 평소엔 0~2000 근처, 특정 시점(1~2월 두 번, 3/5/7/10/12월)에만 순간적으로 스파이크
         - 지속 구간이 아닌 찰나의 스파이크 → 클리핑(clipping)이 적합한 케이스
         
-        ![스크린샷 2026-07-03 오후 6.27.40.png](README/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2026-07-03_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_6.27.40.png)
+        ![스크린샷 2026-07-03 오후 6.27.40.png](README/building993.png)
         
         결론: 베이스라인은 유지하고 튀는 점만 클리핑
         
@@ -215,7 +215,7 @@ weather (기상 데이터)
     
     2. 에너지 사용 패턴 분석 - Correlation Heatmap 해석
     
-    ![image.png](README/a3d63f14-04b5-4a63-8b61-7b8308676958.png)
+    ![image.png](README/heatmap.png)
     
     | 기준 | 발견 |
     | --- | --- |
@@ -249,21 +249,21 @@ y = log1p(meter_reading)
 - meter_reading 로그 변환 분포 확인
 - log 변환 필요성 재확인
 
-![image.png](README/image%202.png)
+![image.png](README/image2.png)
 
 **2. 시간대별 소비 패턴**
 
 - **시간대**: 낮(15시경 피크) vs 새벽(5~6시 저점)
 
-![image.png](README/image%203.png)
+![image.png](README/image3.png)
 
 - **요일**: 화요일(2) 최대, 주말(5,6) 감소
 
-![image.png](README/image%204.png)
+![image.png](README/image4.png)
 
 - **월별**: 3~6월 및 겨울철 소비 높음 (난방 영향)
     
-    ![image.png](README/image%205.png)
+    ![image.png](README/image5.png)
     
 
 **3. 건물별 소비량 비교**
@@ -272,7 +272,7 @@ y = log1p(meter_reading)
 - Site별 소비
     - site 13이 압도적으로 높음 (14,000 수준, 나머지는 대부분 2,000 미만)
 
-![image.png](README/image%206.png)
+![image.png](README/image6.png)
 
 **4. 계절성 분석**
 
@@ -282,19 +282,19 @@ y = log1p(meter_reading)
 
 - **전기**: 낮 시간대(11~16시) 소비 피크, 완만한 일변동
 
-![image.png](README/image%207.png)
+![image.png](README/image7.png)
 
 - **냉방(Chilled Water)**: 9월에 최고치(여름 냉방 수요)
     
-    ![image.png](README/image%208.png)
+    ![image.png](README/image8.png)
     
 - **증기(Steam)**: 3~6월 높고 7~9월 낮음 (겨울/환절기 난방)
     
-    ![image.png](README/image%209.png)
+    ![image.png](README/image9.png)
     
 - **온수(Hot Water)**: 겨울(1,2,11,12월) 높고 여름(5,6월) 낮음, 뚜렷한 on/off성 패턴
     
-    ![image.png](README/image%2010.png)
+    ![image.png](README/image10.png)
     
 
 > 예시 인사이트: “특정 건물은 야간에도 높은 전력 소비를 보여 비정상적인 패턴 가능성이 있음”
@@ -414,12 +414,12 @@ LightGBM이 학습 속도 및 성능 측면에서 충분히 우수하다고 판�
     - 데이터 크기: train (16,786,316, 34), valid (3,412,915, 34)
 - **Best iteration [2000]**: train rmse 0.3824, valid rmse 0.4121
 
-![image.png](README/448431cd-edf7-413a-820c-f0ab74cba2b1.png)
+![image.png](README/rmsle.png)
 
 - **Feature Importance**
     - `lag_1`의 의존도가 압도적으로 높고, `rolling_mean_24`, `lag_24`가 뒤를 이음
     
-    ![image.png](README/image%2011.png)
+    ![image.png](README/image11.png)
     
 
 1. Lag 제거 실험 (강건성 검증)
@@ -437,7 +437,7 @@ LightGBM이 학습 속도 및 성능 측면에서 충분히 우수하다고 판�
         - RMSLE가 0.412 → 1.028로, 거의 2.5배 나빠짐
         - 149.9% 악화, 성능 붕괴
     
-    ![image.png](README/image%2012.png)
+    ![image.png](README/image12.png)
     
     | 조건 | RMSLE |
     | --- | --- |
@@ -448,7 +448,7 @@ LightGBM이 학습 속도 및 성능 측면에서 충분히 우수하다고 판�
         - lag 제거 시 `building_mean`(장기 평균)이 1위로 부상
         - 건물 크기(`square_feet`), 계절(`month`), 날씨(`HDD`) feature가 뒤이어 중요도 상승
     
-    ![image.png](README/image%2013.png)
+    ![image.png](README/image13.png)
     
 
 ```python
@@ -578,11 +578,11 @@ LightGBM이 학습 속도 및 성능 측면에서 충분히 우수하다고 판�
     | Utility | 6시 | 새벽 피크 (표본 4개, 일반화 주의) |
     | Parking | 21시 | 야간 주차 수요 추정 |
     
-    ![image.png](README/image%2014.png)
+    ![image.png](README/image14.png)
     
 2. 평일/주말 비율
     
-    ![image.png](README/image%2015.png)
+    ![image.png](README/image15.png)
     
 - 업무형 vs 상시형
     - 주말에 확 줄어드는 업무형 : Retail(0.91), Office(0.95), Services(0.96), Education(0.96)
@@ -630,9 +630,9 @@ LightGBM이 학습 속도 및 성능 측면에서 충분히 우수하다고 판�
     - 단위 = **전력 사용량 단위 (kWh 등)**
     - 평균적으로 약 **1300 정도 틀림**
         
-        ![image.png](README/49758b44-ee45-4b35-85f7-06bb27e01b56.png)
+        ![image.png](README/peak.png)
         
-        ![image.png](README/image%2016.png)
+        ![image.png](README/image16.png)
         
 - 시간대별 오차
     - 7~9시 = 출근 / 가동 시작
@@ -644,7 +644,7 @@ LightGBM이 학습 속도 및 성능 측면에서 충분히 우수하다고 판�
         - 비선형 패턴
             - 갑자기 켜지는 장비 → 모델이 못 맞춤
 
-![image.png](README/image%2017.png)
+![image.png](README/image17.png)
 
 1.  이상 탐지: 비정상적인 에너지 사용 감지
     - 상위 1%를 이상치로 정의
@@ -652,21 +652,21 @@ LightGBM이 학습 속도 및 성능 측면에서 충분히 우수하다고 판�
         - meter 2가 압도적으로 많음
         - 증기 사용량에서 이상 패턴이 가장 많이 발생하였고, 이는 산업 설비 특성상 변동성이 크기 때문으로 예상됨
         
-        ![image.png](README/image%2018.png)
+        ![image.png](README/image18.png)
         
     - sample building_id 이상치
         
-        ![image.png](README/c574ec87-670f-45c1-9356-8d82e6564c61.png)
+        ![image.png](README/anomalydetection.png)
         
     - 시간대별 이상치 비율
         
-        ![image.png](README/image%2019.png)
+        ![image.png](README/image19.png)
         
     - 이상 사례 분석
         - meter 2, hour 7, building_id 7
         - 7시 급등 이후 다시 정상 범위 → 일시적 이벤트성 이상
             
-            ![image.png](README/image%2020.png)
+            ![image.png](README/image20.png)
             
         - 비즈니스 해석
             - 운영 관점 : 업무 시작 시점에 설비가 동시에 가동되며 급격한 에너지 피크 발생
@@ -700,7 +700,7 @@ LightGBM이 학습 속도 및 성능 측면에서 충분히 우수하다고 판�
             
             ⇒ 증기 사용 설비에서 비정상 패턴이 집중되어 효율 개선 및 설비 점검 필요
             
-            ![image.png](README/image%2021.png)
+            ![image.png](README/image21.png)
             
     3. 건물별 리스크 관리
         - building_id에서 이상 집중
@@ -710,7 +710,7 @@ LightGBM이 학습 속도 및 성능 측면에서 충분히 우수하다고 판�
             
             ⇒ 이상 발생이 많은 건물을 중심으로 타겟형 에너지 관리 전략 수립 가능
             
-            ![image.png](README/image%2022.png)
+            ![image.png](README/image22.png)
             
     4. AI 기반 스마트 빌딩 시스템
         - 현재 모델 → 서비스화
@@ -863,9 +863,9 @@ b.  **증기 (선형계획법, LP)** - 당초 설비 단위 on/off 가정한 MIL
     
     전기 트랙 최적화 결과 - Building 802
     
-    ![image.png](README/cbc3088a-2fc8-4b18-af00-853470db75c1.png)
+    ![image.png](README/electricity.png)
     
-    ![image.png](README/image%2023.png)
+    ![image.png](README/image23.png)
     
     민감도 분석 (파라미터 근거)
     
@@ -882,7 +882,7 @@ b.  **증기 (선형계획법, LP)** - 당초 설비 단위 on/off 가정한 MIL
     
     증기 트랙 Peak Shaving 결과 - Building 802
     
-    ![image.png](README/4a74f8ad-2054-448a-9d51-368c4e6c127c.png)
+    ![image.png](README/steampeak.png)
     
     민감도 분석 
     
